@@ -1,0 +1,274 @@
+
+@import "jquery-ui.less";
+@import "mixins.less";
+
+@color1: black;
+@color2: white;
+@color3: yellow;
+@color4: rgb(0,104,56);
+@boxBorders: #2C2C2C;
+@navbar: #2C2C2C;
+
+@minWidth: 600px;
+@hudHeight: 650px;
+@hudGutter: 15px;
+@resultsWidth: 370px;
+
+@font-face {
+  font-family: 'Alfa Slab One';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Alfa Slab One'), local('AlfaSlabOne-Regular'), url('http://themes.googleusercontent.com/static/fonts/alfaslabone/v2/Qx6FPcitRwTC_k88tLPc-fn8qdNnd5eCmWXua5W-n7c.woff') format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url('http://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff') format('woff');
+}
+
+
+body {
+  background: url('http://a.hikehero.com/img/eggshell.jpg') repeat;
+}
+
+.banner {
+  .min-width(@minWidth);
+  height: 80px;
+  .title {
+    padding: 10px 5px 10px 20px;
+    float: left;
+    font-family: 'Alfa Slab One',arial,sans-serif;
+    font-weight: 400;
+    font-size: 50px;
+    letter-spacing: 1px;
+    line-height: 60px;
+    .text-shadow(2px,2px,0);
+    img {
+      float: left;
+      padding: 5px 10px 0 0;
+    }
+  }
+  span {
+    padding-top: 40px;
+    font-family: helvetica,arial,sans-serif;
+    font-size: 18px;
+    line-height: 20px;
+    float: left;
+  }
+}
+
+.filterbar {
+  overflow: hidden;
+  margin-bottom: 0px;
+  .inner {
+    .min-width(@minWidth);
+    overflow: hidden;
+    padding: 0 20px 0 20px;
+    height: 38px;
+    background-color: @navbar;
+    .gradient-vertical(#333,#222);
+    .box-shadow(0,1px,3px,rgba(0,0,0,0.25));
+  }
+  span {
+    float: left;
+    padding: 11px 10px 11px 0;
+    display: block;
+    line-height: 16px;
+    color: white;
+  }
+  .sorted {color: @orange}
+  .filter {
+    float: left;
+    height: 38px;
+    padding-right: 20px;
+    color: white;
+    input, select {
+      margin: 5px 0px;
+      padding: 3px 9px;
+      height: 20px;
+      width: 150px;
+      color: @white;
+      font-size: 13px;
+      font-family: Helvetica,arial,sans-serif;
+      border: 1px solid @black;
+      background: fade(@white,30%);
+      outline: 0px;
+      .box-shadow(0px,1px,2px,fade(@white, 15%));
+      .border-radius(9px);
+      &:hover {background: fade(@white,50%);}
+      &:focus {background: @white; color: @black;}
+    }
+    select, option {
+      padding: 3px 0px;
+      font-size: 12px;
+      height: 26px;
+      background: @navbar;
+      color: @white;
+      &:hover {background: lighten(@navbar,20%)}
+      &:focus {background: lighten(@navbar,20%); color:@white}
+    }
+    .slider {
+      width: 120px;
+      margin-top: 6px;
+    }
+    label {
+      float: left;
+      height: 13px;
+      font-size: 11px;
+      padding: 0 0 0 6px;
+      color: @white;
+      display: block;
+      line-height: 16px;
+    }
+  }
+}
+
+.mainHUD {
+  width: 100%;
+  height: @hudHeight;
+  .results, .map {
+    height: @hudHeight - @hudGutter - 2px;
+    background: fade(@white, 65%);
+    border: 1px solid fade(@boxBorders,50%); 
+  }
+  .map {
+    margin: @hudGutter @hudGutter 0 0;
+    margin-left: @resultsWidth + @hudGutter*2 + 2px;
+    width: 100%;
+    overflow: hidden;
+  }
+  .results {
+    float: left;
+    margin: 0 @hudGutter 0 @hudGutter;
+    width: @resultsWidth;
+    .border-radius(10px);
+    overflow: hidden;
+  }
+}
+
+@colorMix: lighten(spin(@green, 8), 25%);
+@innerBorder: 1px dotted lighten(@boxBorders,60%);
+
+#resultContainer {
+  width: @resultsWidth;
+  .box-shadow(0,3px,9px,rgba(0,0,0,0.30));
+  ul {list-style: none; margin: 0; padding: 0;}
+  .selected {
+    background: fade(@green,50%);
+    &:hover {background: fade(@green,65%)}
+  }
+}
+
+
+
+li .hike {
+  height: 80px;
+  width: @resultsWidth;
+  border-top: 1px solid fade(@boxBorders,10%);
+  border-bottom: 1px solid fade(@boxBorders,40%);
+  cursor: pointer;
+  &:hover {background: fade(@orange,30%);}
+  .name {
+    position: relative;
+    height: 30px;
+    padding: 6px 0 4px 7px;
+    width: @resultsWidth - 7px;
+    overflow: hidden;
+    font-family: 'Open Sans',arial,sans-serif;
+    font-size: 23px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 30px;
+    .close {position: absolute; top:1px; right:2px;}
+  }
+  .info {
+    height: 40px;
+    width: @resultsWidth;
+    border-top: @innerBorder;
+    .distance {
+      height: 29px;
+      float: left;
+      width: @resultsWidth - 7px - 69px * 2;
+      padding: 5px 0 5px 7px;
+      font-family: helvetica,arial,sans-serif;
+      font-size: 11px;
+      line-height: 15px;
+    }
+    .difficulty, .rating {
+      float: left;
+      width: 63px;
+      height: 29px;
+      padding: 5px 0 5px 5px;
+      border-left: @innerBorder;
+      font-family: helvetica,arial,sans-serif;
+      font-size: 10px;
+      text-transform: uppercase;
+      line-height: 13px;
+      span {font-size:12px; line-height:15px;}
+    }
+  }
+}
+
+img.loading {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  margin-left: @resultsWidth/2 - 16px;
+  height: 32px;
+  width: 32px;
+}
+li p.empty {
+  font-size: 15px;
+  line-height: 18px;
+  padding: 31px 0 31px 20px;
+}
+
+
+
+
+.landing-page {
+  .center;
+  margin-top: 100px;
+  width: 450px;
+  .title {
+    .center;
+    padding-bottom: 10px;
+    font-family: 'Alfa Slab One',arial,sans-serif;
+    font-weight: 400;
+    font-size: 70px;
+    letter-spacing: 2px;
+    line-height: 80px;
+    .text-shadow(3px,3px,0);
+    img {
+      padding: 5px 10px 0 0;
+    }
+  }
+  span {
+    display: block;
+    padding-top: 0px;
+    margin-bottom: 35px;
+    font-family: helvetica,arial,sans-serif;
+    font-size: 22px;
+    line-height: 25px;
+  }
+  hr {border: 1px solid @gray}
+  .list {
+    width: 273px;
+    padding-top: 10px;
+    .center;
+    text-align: left;
+    font-size: 15px;
+    .btn {width: 250px;font-size:17px;line-height:23px;}
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

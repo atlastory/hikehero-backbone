@@ -1,0 +1,287 @@
+
+@black: #000;
+@grayDarker: #222;
+@grayDark: #333;
+@gray: #555;
+@grayLight: #999;
+@grayLighter: #eee;
+@white: #fff;
+
+@blue: #049cdb;
+@green: #46a546;
+@red: #9d261d;
+@yellow: #ffc40d;
+@orange: #f89406;
+@pink: #c3325f;
+@purple: #7a43b6;
+
+// Vertical gradient with color stop
+.gradient-stop (@topColor: #555, @botColor: #333, @scale: 50%) {
+  background: @botColor;
+  background: -moz-linear-gradient(top, @topColor 0%, @botColor @scale);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@topColor), color-stop(@scale,@botColor));
+  background: -webkit-linear-gradient(top, @topColor 0%,@botColor @scale);
+  background: -o-linear-gradient(top, @topColor 0%,@botColor @scale);
+  background: -ms-linear-gradient(top, @topColor 0%,@botColor @scale);
+  background: linear-gradient(top, @topColor 0%,@botColor @scale); 
+}
+
+// Text shadows
+.text-shadow (@offsetTop: 1px, @offsetLeft: 1px, @blur: 2px, @color: rgba(0,0,0,0.15)) {
+  -moz-text-shadow: @offsetTop @offsetLeft @blur @color;
+  -o-text-shadow: @offsetTop @offsetLeft @blur @color;
+  -webkit-text-shadow: @offsetTop @offsetLeft @blur @color;
+  text-shadow: @offsetTop @offsetLeft @blur @color;
+}
+
+// Inset box shadow
+.box-shadow-in(@offsetTop: 1px, @offsetLeft: 0, @blur: 2px, @color: rgba(0,0,0,0.15)) {
+  box-shadow: inset @offsetTop @offsetLeft @blur @color;
+  -moz-box-shadow: inset @offsetTop @offsetLeft @blur @color;
+  -webkit-box-shadow: inset @offsetTop @offsetLeft @blur @color;
+}
+// Min-Width (CB)
+.min-width(@width) {
+  min-width: @width;
+  width: auto !important;
+  width: @width;
+}
+
+
+
+// MIXINS.LESS
+
+// LESS Mixin Library
+  // (CB = Cross Browser)
+  // (LJS = Less.js style)
+  // (LST = Less Standard)
+
+// i18n Layout version of left/right dependant properties
+@direction: ltr;
+@dir: left;
+@dirOp: right;
+
+// Margin (CB) (to use: .margin(@dir, 20px); or .margin(@dirOp, 0px))
+.margin(left, @dist: @gutter) {
+  margin-left: @dist;
+}
+.margin(right, @dist: @gutter) {
+  margin-right: @dist;
+}
+
+// Padding (CB)
+.padding(left, @dist: @gutter) {
+  padding-left: @dist;
+}
+.padding(right, @dist: @gutter) {
+  padding-right: @dist;
+}
+
+// Left/Right (CB) (.lr(@dir, 10px) == left:10px; or right:10px based on @dir)
+.lr(left, @dist: 0) {
+  left: @dist;
+}
+.lr(right, @dist: 0) {
+  right: @dist;
+}
+
+// Clearfix (CB)
+.clearfix {
+  zoom: 1;
+  &:before, &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+// Hide Text (CB) (off screen for image-replacement purposes)
+.hide-text {
+  display: block;
+  text-indent: -999em;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  text-align: left;
+  direction: ltr;   
+}
+
+// Simple multi-border color
+.border(@topColor: #eee, @rightColor: #ccc, @bottomColor: #aaa, @leftColor: #ccc) {
+  border-width: 1px;  
+  border-style: solid;
+  border-color: @topColor @rightColor @bottomColor @leftColor;
+}
+
+// Opacity (CB)
+.opacity(@value) {
+  opacity: @value / 100;
+  -khtml-opacity: @value / 100;
+  -moz-opacity: @value / 100;
+  -ms-filter: %("progid:DXImageTransform.Microsoft.Alpha(Opacity=%s)", @value); // (LJS)
+  // -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity="@value")"; // (LST)
+  filter: e(%("alpha(opacity=%s)", @value)); // (LJS)
+  // filter: alpha(opacity=@value); // (LST)
+}
+
+// Border-Radius (CB) (all corners have same radius)
+.border-radius(@radius: 10px) {
+  -khtml-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+  border-radius: @radius;
+}
+
+// Multiple Border-Radii (CB) (all corners may have different radii)
+.border-radius-mult(@topright: 10px, @bottomright: 10px, @bottomleft: 10px, @topleft: 10px) {
+  -khtml-border-top-right-radius: @topright;
+  -khtml-border-bottom-right-radius: @bottomright;
+  -khtml-border-bottom-left-radius: @bottomleft;
+  -khtml-border-top-left-radius: @topleft;
+  -moz-border-top-right-radius: @topright;
+  -moz-border-bottom-right-radius: @bottomright;
+  -moz-border-bottom-left-radius: @bottomleft;
+  -moz-border-top-left-radius: @topleft;
+  -webkit-border-top-right-radius: @topright;
+  -webkit-border-bottom-right-radius: @bottomright;
+  -webkit-border-bottom-left-radius: @bottomleft;
+  -webkit-border-top-left-radius: @topleft;
+  border-top-right-radius: @topright;
+  border-bottom-right-radius: @bottomright;
+  border-bottom-left-radius: @bottomleft;
+  border-top-left-radius: @topleft;
+}
+
+// Center Block Element (CB)
+.center {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+// TODO: RGBA
+.rgba {
+  // IE: convert rgba to AARRGGBB or accept second argument (fallback rgb?)
+}
+
+// TODO: add inset or make separate .inner-shadow
+.box-shadow(@offsetTop: 1px, @offsetLeft: 0, @blur: 2px, @color: rgba(0,0,0,0.15)) {
+  box-shadow: @offsetTop @offsetLeft @blur @color;
+  -moz-box-shadow: @offsetTop @offsetLeft @blur @color;
+  -webkit-box-shadow: @offsetTop @offsetLeft @blur @color;
+}
+
+// Gradients (CB) 
+// Horizontal Gradient
+.gradient-horizontal(@startColor: #555, @endColor: #333) {
+  background-color: @endColor;
+  background-repeat: no-repeat;
+  background-image: -webkit-gradient(linear, left top, right top, from(@startColor), to(@endColor));
+  background-image: -webkit-linear-gradient(right center, @startColor, @endColor);
+  background-image: -moz-linear-gradient(right center, @startColor, @endColor);
+  background-image: -o-linear-gradient(left, @startColor, @endColor);
+  background-image: -khtml-gradient(linear, left top, right top, from(@startColor), to(@endColor));
+  filter: e(%("progid:DXImageTransform.Microsoft.Gradient(StartColorStr='%d', EndColorStr='%d', GradientType=1)", @startColor, @endColor));
+  -ms-filter: %("progid:DXImageTransform.Microsoft.gradient(startColorStr='%d', EndColorStr='%d', GradientType=1))", @startColor, @endColor);
+}
+
+// Vertical Gradient
+.gradient-vertical(@startColor: #555, @endColor: #333) {
+  background-color: @endColor;
+  background-repeat: no-repeat;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+  background-image: -webkit-linear-gradient(@startColor, @endColor);
+  background-image: -moz-linear-gradient(@startColor, @endColor);
+  background-image: -o-linear-gradient(top, @startColor, @endColor);
+  background-image: -khtml-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+  filter: e(%("progid:DXImageTransform.Microsoft.Gradient(StartColorStr='%d', EndColorStr='%d', GradientType=0)", @startColor, @endColor));
+  -ms-filter: %("progid:DXImageTransform.Microsoft.gradient(startColorStr='%d', EndColorStr='%d', GradientType=0))", @startColor, @endColor);
+}
+
+// Min-Height (CB)
+.min-height(@height) {
+  min-height: @height;
+  height: auto !important;
+  height: @height;
+}
+
+// Resize (make an element resizable)
+.resize(@value: both) {
+  -webkit-resize: @value; 
+  -moz-resize: @value; 
+  resize: @value; 
+}
+
+// Transform
+.transform(@params) {
+  -webkit-transform: @params;
+  -moz-transform: @params;
+  -o-transform: @params;
+  transform: @params;
+  -ms-transform: @params;
+}
+
+// Rotate TODO: Check CB
+.rotate(@deg: 35){
+  .transform( e(%("rotate(%ddeg)", @deg) );
+  // IE rotation
+  @deg2radians: 3.1416 * 2 / 360;
+  @rad: @degree * @deg2radians;
+  @sintheta: ~`Math.sin(@{rad})`;
+  @costheta: ~`Math.cos(@{rad})`;
+  @M11: @costheta;
+  @M12: -@sintheta;
+  @M21: @sintheta;
+  @M22: @costheta;
+  filter: e(%("progid:DXImageTransform.Microsoft.Matrix(M11=%d, M12=%d, M21=%d, M22=%d, sizingMethod='auto expand')", @M11, @M12, @M21, @M22));
+  zoom: 1;
+}
+
+// Scale 
+.scale(@ratio: 1.5) {
+  .transform(scale(@ratio) ); 
+  // TODO: IE scale method
+}
+
+.transition(@prop: all, @time: .5s, @easing: ease-in-out){
+  transition: @prop @time @easing;
+  -moz-transition: @prop @time @easing;
+  -o-transition: @prop @time @easing;
+  -webkit-transition: @prop @time @easing;
+}
+
+// Force word wrap on single non-breaking strings
+.word-wrap {
+  white-space: pre; 
+  white-space: pre-wrap;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+// Allow IE6 to render 24bit png
+.ie6-pngfix(@png) {
+  background: transparent;
+  filter: e(%("progid:DXImageTransform.Microsoft.AlphaImageLoader(src='%d', sizingMethod='scale')", @png));
+}
+
+// Display a list of links horizontally (CB) 
+.horizontal {
+  ul, ol {
+    display: block;
+    .margin(@dir, 0);
+  }
+  li {
+    display: inline;
+    float: @dir;
+  }
+  a {
+    display: block;
+    float: @dir;
+  }
+}
+
+// TODO: Grid/Columns system?
+.columns(@count: 3, @gutter: 10px) {
+  
+}
