@@ -1,13 +1,15 @@
 
 (function($){
 	
-	var app, hikeList, geoLocation;
+	var app, hikeList, geoLocation, appRouter;
 	
 	// Load functions
 	$(function(){
 		
 		hikeList = new HikeList();
 		app = new App();
+		appRouter = new AppRouter();
+		Backbone.history.start();
 		
 	});
 
@@ -133,7 +135,7 @@
 		modal: $(".modal")
 	};
 	
-	// App controller
+	// App view
 	var App = Backbone.View.extend({
 		el: $(window),
 		events: {
@@ -209,14 +211,16 @@
 				min: 0,
 				max: 15,
 				values: hikeList.filterDefaults.length,
-				slide: function(event,ui){self.length(event,ui)}
+				slide: function(event,ui){self.length(event,ui)},
+				stop: function(){appRouter.update()}
 			});
 			$(".slider",el.ctrlDiff).slider({
 				range: true,
 				min: 0,
 				max: 10,
 				values: hikeList.filterDefaults.difficulty,
-				slide: function(event,ui){self.difficulty(event,ui)}
+				slide: function(event,ui){self.difficulty(event,ui)},
+				stop: function(){appRouter.update()}
 			});
 			$("select",el.ctrlDist).change(function(){self.distance($(this).val())});
 			// Create model collection & attach handlers:
@@ -240,7 +244,9 @@
 		populate: function(){
 			// Populates results with hikeList DB collection
 			app.mapView.getLocation();
-			this.collection.models = hikeList.models;
+			app.mapView.drawCircle(hikeList.filterDefaults.distance[1]);
+			this.collection.models = hikeList.fltr();
+			this.collection.sort("distance",1);
 			this.collection.trigger("change");
 		},
 		distance: function(val){
@@ -251,6 +257,7 @@
 			this.collection.models = filter;
 			this.collection.sort("distance",1);
 			this.collection.trigger("change");
+			appRouter.update();
 		},
 		length: function(event,ui){
 			var min = ui.values[0], max = ui.values[1],
@@ -385,7 +392,49 @@
 			});
 		}
 	});
+
+
+/* /////////////////// 
+ * ///// ROUTERS /////
+ * /////////////////// */
 	
+	var AppRouter = Backbone.Router.extend({
+		routes: {
+			"": "home",
+			"f/:dist/:l1/:l2/:d1/:d2/": "change"
+		},
+		update: function(trigger){
+			var	f 	= hikeList.filterDefaults, hash;
+			if (!trigger) trigger = false;
+			
+			hash	= f.distance[1]+"/"
+					+ f.length[0]+"/"
+					+ f.length[1]+"/"
+					+ f.difficulty[0]+"/"
+					+ f.difficulty[1]+"/";
+			
+			this.navigate("f/"+hash,{replace:true, trigger:trigger});
+		},
+		home: function(){
+			
+		},
+		change: function(dist,l1,l2,d1,d2){
+			// Distance doesn't work yet because of map geoloc delay
+			$.extend(hikeList.filterDefaults, {
+				//distance: [0,dist],
+				length: [l1,l2],
+				difficulty: [d1,d2]
+			});
+			
+			//$("select",el.ctrlDist).val(dist);
+			$(".slider",el.ctrlLength).slider("option","values",[l1,l2]);
+			$("min",el.ctrlLength).html(l1);
+			$("max",el.ctrlLength).html(l2);
+			$(".slider",el.ctrlDiff).slider("option","values",[d1,d2]);
+			$("min",el.ctrlDiff).html(d1);
+			$("max",el.ctrlDiff).html(d2);
+		}
+	});
 	
 })(jQuery);
 
