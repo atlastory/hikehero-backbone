@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html;charset=UTF-8" http-equiv="content-type"/>
+		<title>HikeHero</title>
+		
+		<link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="css/styles.css" type="text/css" media="screen" />
+	</head>
+<body>
+	
+	<div class="banner">
+		<div class="title">
+			<img src="img/logo.png" width="76" height="53">
+			HikeHero
+		</div>
+		<span>[beta] Northern Utah</span>
+	</div>
+	<div class="filterbar">
+	  <div class="inner">
+	    	<span class="distance">Location:</span>
+	    	<div class="filter" id="distance">
+	    		<select>
+	    			<option value="5">Within 5 miles of me</option>
+	    			<option value="10">Within 10 miles of me</option>
+	    			<option value="20">Within 20 miles of me</option>
+	    			<option value="40">Within 40 miles of me</option>
+	    			<option value="100" selected="selected">All hikes in area</option>
+	    		</select>
+	    	</div>
+	 		<span class="length">Length:</span>
+	    	<div class="filter" id="length">
+	    		<div class="slider"></div>
+	    		<label><min>0</min> - <max>15</max> mi.</label>
+	    	</div>
+	    	<span class="difficulty">Difficulty:</span>
+	    	<div class="filter" id="difficulty">
+	    		<div class="slider"></div>
+	    		<label>[easy] <min>0</min> - <max>10</max> [hard]</label>
+	    	</div>
+	    	<!-- <button id="test">Test</button> -->
+	  </div>
+	</div>
+	
+	<div class="mainHUD">
+		<div class="results">
+			<div id="resultContainer">
+				<ul></ul>
+			</div>
+		</div>
+		<div class="map">
+			<div id="mapDiv"></div>
+		</div>
+	</div>
+	
+	<div class="modal hide fade">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">x</a>
+			<h3>Your Location</h3>
+		</div>
+		<div class="modal-body">
+			<p class="text"></p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+	
+	<!-- Templates -->
+	<script type="text/template" id="hike-result">
+		<div class="hike">
+			<div class="name">
+				<%= name %>
+				<div class="close"><i class="icon-remove"></i></div>
+			</div>
+			<div class="info">
+				<div class="distance">
+					This trail is <%= distance %> miles from your location.<br/>
+					<strong>One-way</strong>: <%= length %> miles
+				</div>
+				<div class="difficulty">
+					Difficulty:<br/>
+					<span><strong><%= difficulty %></strong> / 10</span>
+				</div>
+				<div class="rating">
+					Rating:<br/>
+					<% if (rating<=0.5) { %>
+						<i class="icon-star-empty"></i><i class="icon-star-empty"></i><i class="icon-star-empty"></i><i class="icon-star-empty"></i>
+					<% } else if (rating<=1.5) { %>
+						<i class="icon-star"></i><i class="icon-star-empty"></i><i class="icon-star-empty"></i><i class="icon-star-empty"></i>
+					<% } else if (rating<=2.5) { %>
+						<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i><i class="icon-star-empty"></i>
+					<% } else if (rating<=3.5) { %>
+						<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-empty"></i>
+					<% } else { %>
+						<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+					<% } %>
+				</div>
+			</div>
+		</div>
+	</script>
+	<script type="text/template" id="blank-template">
+		<% if (mode=='loading') { %>
+		<li>
+			<img src="http://a.hikehero.com/img/loading.gif" class="loading" title="Loading results..."/>
+		</li>
+		<% } else { %>
+		<li>
+			<p class="empty">No hikes match your search.</p>
+		</li>
+		<% } %>
+	</script>
+	
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/underscore.js"></script>
+    <script type="text/javascript" src="js/backbone.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-29087707-1']);
+	  _gaq.push(['_trackPageview']);
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+</body>
+</html>
